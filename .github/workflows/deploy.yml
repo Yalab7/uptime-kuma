@@ -21,19 +21,19 @@ jobs:
 
     steps:
       - name: Checkout the code
-        uses: actions/checkout@v3
+        uses: actions/checkout@v4
 
       - name: Deploy to Frontend Server
         uses: appleboy/ssh-action@v1.1.0
         with:
-          host: ${{ secrets.FRONTEND_SERVER_IP }}    # Add the EC2 public IP in GitHub Secrets
+          host: ${{ secrets.FRONTEND_SERVER_IP }}
           username: ubuntu
-          key: ${{ secrets.SSH_PRIVATE_KEY }}         # Add the private key in GitHub Secrets
+          key: ${{ secrets.SSH_PRIVATE_KEY }}
           script: |
-            docker pull louislam/uptime-kuma:1
-            docker stop uptime-kuma || true
-            docker rm uptime-kuma || true
-            docker run -d --restart=always \
+            sudo docker pull louislam/uptime-kuma:1
+            sudo docker stop uptime-kuma || true
+            sudo docker rm uptime-kuma || true
+            sudo docker run -d --restart=always \
             -p 3001:3001 \
             -v uptime-kuma:/app/data \
             --name uptime-kuma \
